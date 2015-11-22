@@ -42,7 +42,7 @@ def divrank(G, alpha=0.25, d=0.85, personalization=None,
             if n != n_ :
                 if n_ in W[n]:
                     W[n][n_][weight] *= alpha
-            else:
+            elif W.degree(n) > 0:
                 if n_ not in W[n]:
                     W.add_edge(n, n_)
                 W[n][n_][weight] = 1.0 - alpha
@@ -110,6 +110,7 @@ def divrank_scipy(G, alpha=0.25, d=0.85, personalization=None,
     This code is based on networkx.pagerank_scipy
     '''
     import scipy.sparse
+    import numpy
 
     N = len(G)
     if N == 0:
@@ -127,7 +128,9 @@ def divrank_scipy(G, alpha=0.25, d=0.85, personalization=None,
     M = scipy.sparse.lil_matrix(M)
     M.setdiag(0.0)
     M = alpha * M
-    M.setdiag(1.0 - alpha)
+    not_isolated = numpy.where(M.sum(axis=1) + M.sum(axis=0).T > 0)[0]
+    M[not_isolated,not_isolated] = 1.0 - alpha
+    #print M.toarray()
     #print M.sum(axis=1)
 
     # initial vector
