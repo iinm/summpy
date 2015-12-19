@@ -12,7 +12,7 @@ if os.path.exists('README.rst'):
 
 setup(
     name='summpy',
-    version='0.2.1',
+    version='0.2.2',
     description='Text summarization (sentence extraction) module with simple HTTP API. (currently, supports Japanese only)',
     long_description=long_description,
     author='Shumpei IINUMA',
